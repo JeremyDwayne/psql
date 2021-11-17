@@ -4,6 +4,10 @@ local PSQL = {
     -- dev environment is assumed for this plugin
     -- thus no user name, password is provided here to make it simple
     database_name       = '',
+    database_host       = '',
+    database_user       = '',
+    database_pass       = '',
+    database_port       = '',
 
     -- shortcut to execute query under the cursor line
     execute_line        = '<leader>e',
@@ -58,7 +62,9 @@ local function run_query(query)
   io.close(f)
 
   -- execute query
-  local result = vim.fn.systemlist('psql ' .. PSQL.config.database_name .. ' -f ' .. tmp_file)
+  local result = vim.fn.systemlist('psql "host=' .. PSQL.config.database_host .. ' port=' .. PSQL.config.database_port ..
+                                      ' dbname=' .. PSQL.config.database_name .. ' user=' .. PSQL.config.database_user ..
+                                    ' password=' .. PSQL.config.database_pass .. '" < ' .. tmp_file)
 
   os.remove(tmp_file)
 
